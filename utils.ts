@@ -7,6 +7,11 @@ const user_status = {
 	SUSPENDED: "suspended"
 }
 
+const user_roles = {
+	USER: "user",
+	ADMIN: "admin"
+}
+
 async function create_admin_user(){
 	let admin = {
 		full_name: "admin",
@@ -31,4 +36,4 @@ function authenticate_token(req:any, res:any, next:any){
 	})
 }
 
-export default { create_admin_user, authenticate_token }
+export default { user_status, user_roles, create_admin_user, authenticate_token }
