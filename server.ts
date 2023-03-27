@@ -5,7 +5,9 @@ import express from 'express';
 import router from './routes/router.ts';
 
 const app = express();
-app.use(cors())
+app.use(cors({
+    origin: process.env.CORS_ORIGIN_DOMAIN
+}));
 mongoose.set('strictQuery', true);
 
 const dbUri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.enspmzz.mongodb.net/gamehub?retryWrites=true&w=majority`
