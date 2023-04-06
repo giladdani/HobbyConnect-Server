@@ -10,7 +10,7 @@ app.use(cors({
 }));
 mongoose.set('strictQuery', true);
 
-const dbUri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.enspmzz.mongodb.net/gamehub?retryWrites=true&w=majority`
+const dbUri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.enspmzz.mongodb.net/hobbyconnect?retryWrites=true&w=majority`
 
 // General app settings
 app.use(express.json());  // to support JSON-encoded bodies

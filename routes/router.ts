@@ -4,15 +4,13 @@ import users from './users.ts';
 // @ts-ignore
 import giftcodes from './giftcodes.ts';
 // @ts-ignore
-import games from './games.ts'
+import activities from './activities.ts'
 // @ts-ignore
-import events from './events.ts'
 
 let router = Router();
 
 router.use('/users', users);
 router.use('/giftcodes', giftcodes);
-router.use('/games', games);
-router.use('/events', events)
+router.use('/activities', activities);
 
 export default router;

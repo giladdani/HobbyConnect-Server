@@ -12,7 +12,7 @@ const user_roles = {
 	ADMIN: "admin"
 }
 
-// const event_category = {
+// const activity_category = {
 // 	CONVENTION: "convention";
 // 	TOURNAMENT: "tournament";
 // 	LAN_PARTY: "lan party";

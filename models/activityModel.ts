@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 const Schema = mongoose.Schema;
 
-const eventSchema = new Schema({
+const activitySchema = new Schema({
     title: String,
     description: String,
     category: String,
@@ -12,5 +12,5 @@ const eventSchema = new Schema({
     tickets_left: Number
 })
 
-const Event = mongoose.model('Event', eventSchema);
-export default Event;
+const Activity = mongoose.model('Activity', activitySchema);
+export default Activity;
