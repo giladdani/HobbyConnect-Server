@@ -12,18 +12,13 @@ const user_roles = {
 	ADMIN: "admin"
 }
 
-async function create_admin_user(){
-	let admin = {
-		full_name: "admin",
-		email: "admin@admin.com",
-		id: new Date().getTime(),
-		password: "admin",
-		role: "admin",
-		status: user_status.ACTIVE,
-		posts: [],
-		messages: []
-	}
-}
+// const event_category = {
+// 	CONVENTION: "convention";
+// 	TOURNAMENT: "tournament";
+// 	LAN_PARTY: "lan party";
+// 	GAME_AWARDS: "game awards";
+// }
+
 
 function authenticate_token(req:any, res:any, next:any){
 	const token = req.headers['authorization'];
@@ -36,4 +31,4 @@ function authenticate_token(req:any, res:any, next:any){
 	})
 }
 
-export default { user_status, user_roles, create_admin_user, authenticate_token }
+export default { user_status, user_roles, authenticate_token }
