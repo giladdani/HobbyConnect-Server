@@ -96,6 +96,7 @@ async function create_friend_request(req:any, res:any){
 router.post('/login', async(req, res) => { login(req, res) })
 // router.get('/permissions', utils.authenticate_token, (req, res) => { get_user_permissions(req, res) } )
 router.get('/profile', utils.authenticate_token, (req, res) => { get_user_details(req, res) })
+router.get('/test', async(req, res) => {res.status(StatusCodes.OK).send(process.env.PORT); })
 router.post('/', (req, res) => { create_user(req, res) })
 // router.delete('/:id', utils.authenticate_token, (req, res) => { delete_user(req, res) })
 // router.put('/:id', utils.authenticate_token, (req, res) => { change_user_status(req, res) })
