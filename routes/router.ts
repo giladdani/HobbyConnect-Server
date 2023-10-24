@@ -8,6 +8,7 @@ import activities from './activities.ts'
 // @ts-ignore
 
 let router = Router();
+
 router.use('/users', users);
 router.use('/giftcodes', giftcodes);
 router.use('/activities', activities);
