@@ -13,6 +13,7 @@ async function get_all_activities(req:any, res:any) {
 
 function create_activity(req:any, res:any) {
 	let activity = req.body;
+    activity.creator = req.username;
 	activity.creation_date = new Date(Date.now()).toLocaleString().split(',')[0];
     activitiesDAL.insert_activity(activity)
     res.sendStatus(StatusCodes.CREATED);

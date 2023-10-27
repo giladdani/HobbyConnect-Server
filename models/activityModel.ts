@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 const activitySchema = new Schema({
     title: String,
     description: String,
+    creator: String,
     category: String,
     time: Date,
     location: String,
