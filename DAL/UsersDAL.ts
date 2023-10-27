@@ -27,10 +27,15 @@ async function create_friend_request(request:any) {
     await FriendRequestModel.create(request);
 }
 
+async function get_user_balance(username:any) {
+    return UserModel.findOne({username: username}).select("balance");
+}
+
 export default {
     find_user,
     get_user_details,
     insert_user,
     add_user_balance,
-    create_friend_request
+    create_friend_request,
+    get_user_balance
 }

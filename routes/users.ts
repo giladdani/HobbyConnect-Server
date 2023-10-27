@@ -92,6 +92,16 @@ async function create_friend_request(req:any, res:any){
 	}
 }
 
+async function get_user_balance(req:any, res:any){
+	const userBalance = await usersDAL.get_user_balance(req.username)
+	if(userBalance){
+		res.status(StatusCodes.OK).send(userBalance);
+	}
+	else{
+		res.status(StatusCodes.UNAUTHORIZED).send({data: "No valid user token available"});
+	}
+}
+
 // Routing
 router.post('/login', async(req, res) => { login(req, res) })
 // router.get('/permissions', utils.authenticate_token, (req, res) => { get_user_permissions(req, res) } )
@@ -101,6 +111,7 @@ router.post('/', (req, res) => { create_user(req, res) })
 // router.put('/:id', utils.authenticate_token, (req, res) => { change_user_status(req, res) })
 router.put('/:username/credits', utils.authenticate_token, (req, res) => { grant_credits(req, res) })
 router.post('/friends', utils.authenticate_token, (req, res) => { create_friend_request(req, res) })
+router.get('/balance', utils.authenticate_token, (req, res) => { get_user_balance(req, res) })
 
 // module.exports = router;
 export default router;
