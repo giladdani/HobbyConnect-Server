@@ -8,7 +8,10 @@ const activitySchema = new Schema({
     time: Date,
     location: String,
     price: Number,
-    totalParticipants: Number,
+    totalParticipants: {
+        type: Number,
+        default: 0
+    },
     creator: String,
     creationDate: Date,
     participantsUsernames: [String]

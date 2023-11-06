@@ -21,13 +21,40 @@ function create_activity(req:any, res:any) {
     res.sendStatus(StatusCodes.CREATED);
 }
 
-async function sign_user_to_activity(req:any, res:any){
-    let activity = req.body.activity;
-    if(activity.participantsUsernames.includes(req.username)){
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("You already signed up")
+async function register_user_to_activity(req:any, res:any){
+    // let activity = req.body.activity;
+    let activity = await activitiesDAL.find_activity(req.body.activity.title) ;
+    if(!activity){
+        res.status(StatusCodes.NOT_FOUND).send("Activity not found in DB");
     }
     else{
-        activity.participantsUsernames.push(req.username);
+        if(activity.participantsUsernames.includes(req.username)) {
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("You are already registered for this activity")
+        }
+        if(activity.participantsUsernames.length >= activity.totalParticipants) {
+            res.status(StatusCodes.CONFLICT).send("Activity is full")
+        }
+        else{
+            activity.participantsUsernames.push(req.username);
+            let isSucceed = await activitiesDAL.update_activity_participants(activity);
+            if(isSucceed){
+                res.sendStatus(StatusCodes.OK);
+            }
+            else{
+                res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+            }
+        }
+    }
+}
+
+async function unregister_user_from_activity(req:any, res:any){
+    let activity = req.body.activity;
+    let userIndex = activity.participantsUsernames.indexOf(req.username);
+    if (userIndex == -1) {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("User not found in activity")
+    }
+    else{
+        activity.participantsUsernames.splice(userIndex, 1);
         let isSucceed = await activitiesDAL.update_activity_participants(activity);
         if(isSucceed){
             res.sendStatus(StatusCodes.OK);
@@ -40,6 +67,7 @@ async function sign_user_to_activity(req:any, res:any){
 
 router.get('/', (req, res) => { get_all_activities(req, res) })
 router.post('/', utils.authenticate_token, (req, res) => { create_activity(req, res) })
-router.post('/signup', utils.authenticate_token, (req, res) => sign_user_to_activity(req, res) )
+router.post('/register', utils.authenticate_token, (req, res) => register_user_to_activity(req, res) )
+router.post('/unregister', utils.authenticate_token, (req, res) => unregister_user_from_activity(req, res) )
 
 export default router;
