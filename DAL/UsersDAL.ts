@@ -18,24 +18,23 @@ async function insert_user(user:any) {
     await UserModel.create(user);
 }
 
-async function add_user_balance(username:string, amount:number) {
-    // TODO: check if the db insertion succeeded or failed
-    await UserModel.updateOne({username: username}, {$inc: {balance: amount}});
-}
-
 async function create_friend_request(request:any) {
     await FriendRequestModel.create(request);
 }
 
-async function get_user_balance(username:any) {
+async function get_user_balance(username:string) {
     return UserModel.findOne({username: username}).select("balance");
 }
 
+async function add_user_balance(username:string, amount:number) {
+    // TODO: check if the db insertion succeeded or failed
+    await UserModel.updateOne({username: username}, {$inc: {balance: amount}});
+}
 export default {
     find_user,
     get_user_details,
     insert_user,
-    add_user_balance,
     create_friend_request,
-    get_user_balance
+    get_user_balance,
+    add_user_balance
 }

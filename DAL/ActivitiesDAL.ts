@@ -15,8 +15,22 @@ async function insert_activity(activity:any) {
     await ActivityModel.create(activity);
 }
 
+async function update_activity_participants(activity:any) {
+    try {
+        const updatedActivity = await ActivityModel.findOneAndUpdate(
+          { title: activity.title },
+          { $set: { participantsUsernames: activity.participantsUsernames } },
+          { new: true }
+        );
+        return true;
+      } catch (error) {
+        return false;
+      }
+}
+
 export default {
     find_all_activities,
     find_activity,
-    insert_activity
+    insert_activity,
+    update_activity_participants
 }

@@ -65,15 +65,9 @@ async function create_user(req:any, res:any){
 	}
 }
 
-async function grant_credits(req:any, res:any){
-	const existingUser = await usersDAL.find_user(req.params.username);
-	if(!existingUser){
-		res.status(StatusCodes.NOT_FOUND).send("Username not found");
-	}
-	else{
-		await usersDAL.add_user_balance(existingUser.username, req.body.amount);
-		res.sendStatus(StatusCodes.OK);
-	}
+async function add_user_balance(req:any, res:any){
+	await usersDAL.add_user_balance(req.username, req.body.amount);
+	res.sendStatus(StatusCodes.OK);
 }
 
 async function create_friend_request(req:any, res:any){
@@ -104,14 +98,13 @@ async function get_user_balance(req:any, res:any){
 
 // Routing
 router.post('/login', async(req, res) => { login(req, res) })
-// router.get('/permissions', utils.authenticate_token, (req, res) => { get_user_permissions(req, res) } )
 router.get('/profile', utils.authenticate_token, (req, res) => { get_user_details(req, res) })
 router.post('/', (req, res) => { create_user(req, res) })
-// router.delete('/:id', utils.authenticate_token, (req, res) => { delete_user(req, res) })
-// router.put('/:id', utils.authenticate_token, (req, res) => { change_user_status(req, res) })
-router.put('/:username/credits', utils.authenticate_token, (req, res) => { grant_credits(req, res) })
 router.post('/friends', utils.authenticate_token, (req, res) => { create_friend_request(req, res) })
 router.get('/balance', utils.authenticate_token, (req, res) => { get_user_balance(req, res) })
+router.put('/balance', utils.authenticate_token, (req, res) => { add_user_balance(req, res) })
+// router.get('/permissions', utils.authenticate_token, (req, res) => { get_user_permissions(req, res) } )
+// router.delete('/:id', utils.authenticate_token, (req, res) => { delete_user(req, res) })
+// router.put('/:id', utils.authenticate_token, (req, res) => { change_user_status(req, res) })
 
-// module.exports = router;
 export default router;
