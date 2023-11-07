@@ -22,7 +22,6 @@ function create_activity(req:any, res:any) {
 }
 
 async function register_user_to_activity(req:any, res:any){
-    // let activity = req.body.activity;
     let activity = await activitiesDAL.find_activity(req.body.activity.title) ;
     if(!activity){
         res.status(StatusCodes.NOT_FOUND).send("Activity not found in DB");

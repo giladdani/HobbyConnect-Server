@@ -45,5 +45,4 @@ router.post('/', utils.authenticate_token, (req, res) => { insert_gift_code(req,
 router.put('/', utils.authenticate_token, (req, res) => { redeem_gift_code(req, res) })
 router.delete('/expired', (req, res) => { delete_expired_gift_codes(req, res) })
 
-// module.exports = router;
 export default router;

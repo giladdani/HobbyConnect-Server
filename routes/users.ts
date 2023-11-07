@@ -103,8 +103,5 @@ router.post('/', (req, res) => { create_user(req, res) })
 router.post('/friends', utils.authenticate_token, (req, res) => { create_friend_request(req, res) })
 router.get('/balance', utils.authenticate_token, (req, res) => { get_user_balance(req, res) })
 router.put('/balance', utils.authenticate_token, (req, res) => { add_user_balance(req, res) })
-// router.get('/permissions', utils.authenticate_token, (req, res) => { get_user_permissions(req, res) } )
-// router.delete('/:id', utils.authenticate_token, (req, res) => { delete_user(req, res) })
-// router.put('/:id', utils.authenticate_token, (req, res) => { change_user_status(req, res) })
 
 export default router;
