@@ -57,6 +57,7 @@ async function create_user(req:any, res:any){
 		user.status = utils.user_status.CREATED;
 		user.role = utils.user_roles.USER;
 		user.balance = 0;
+		user.friends = [];
 	
 		// hash password before storing it
 		user.password = await bcrypt.hash(user.password, 10);
@@ -70,20 +71,25 @@ async function add_user_balance(req:any, res:any){
 	res.sendStatus(StatusCodes.OK);
 }
 
+async function get_friends(req:any, res:any){ 
+	const friends = await usersDAL.get_friends(req.username);
+	res.status(StatusCodes.OK).send(friends);
+}
+
+async function get_friend_requests(req:any, res:any) {
+	const friendRequests = await usersDAL.get_friend_requests(req.username);
+	res.status(StatusCodes.OK).send(friendRequests);
+}
+
 async function create_friend_request(req:any, res:any){
-	const existingUser = await usersDAL.find_user(req.body.username);
-	if(!existingUser){
-		res.status(StatusCodes.NOT_FOUND).send("Username not found");
-	}
-	else{
-		const friendRequest = {
-			sender: req.username,
-			receiver: req.body.username,
-			creation_date: new Date(Date.now()).toLocaleString().split(',')[0]
-		}
-		await usersDAL.create_friend_request(friendRequest);
-		res.sendStatus(StatusCodes.CREATED);
-	}
+	let request = {sender: req.username, receiver: req.body.receiver, creationDate: new Date(Date.now()).toLocaleString().split(',')[0]}
+	await usersDAL.create_friend_request(request);
+	res.sendStatus(StatusCodes.CREATED);
+}
+
+async function update_friend_request_status(req:any, res:any){
+	await usersDAL.update_friend_request_status(req.username, req.body.sender, req.body.isAccepted);
+	res.sendStatus(StatusCodes.OK);
 }
 
 async function get_user_balance(req:any, res:any){
@@ -100,7 +106,10 @@ async function get_user_balance(req:any, res:any){
 router.post('/login', async(req, res) => { login(req, res) })
 router.get('/profile', utils.authenticate_token, (req, res) => { get_user_details(req, res) })
 router.post('/', (req, res) => { create_user(req, res) })
-router.post('/friends', utils.authenticate_token, (req, res) => { create_friend_request(req, res) })
+router.get('/friends', utils.authenticate_token, (req, res) => { get_friends(req, res) })
+router.get('/friends/requests', utils.authenticate_token, (req, res) => { get_friend_requests(req, res) })
+router.post('/friends/requests', utils.authenticate_token, (req, res) => { create_friend_request(req, res) })
+router.put('/friends/requests', utils.authenticate_token, (req, res) => { update_friend_request_status(req, res) })
 router.get('/balance', utils.authenticate_token, (req, res) => { get_user_balance(req, res) })
 router.put('/balance', utils.authenticate_token, (req, res) => { add_user_balance(req, res) })
 

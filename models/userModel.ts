@@ -8,7 +8,8 @@ const userSchema = new Schema({
     creationDate: String,
     role: String,
     status: String,
-    balance: Number
+    balance: Number,
+    friends: [String]
 })
 
 const User = mongoose.model('User', userSchema);
