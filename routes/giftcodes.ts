@@ -8,6 +8,12 @@ import giftCodesDAL from '../DAL/GiftCodesDAL.ts';
 import usersDAL from '../DAL/UsersDAL.ts';
 let router = express.Router()
 
+async function get_gift_codes(req:any, res:any) {
+    // TODO: verify that the requesting user is an admin
+    const codes = await giftCodesDAL.get_gift_codes();
+    res.status(StatusCodes.OK).send(codes);
+}
+
 async function generate_gift_code(req:any, res:any) {
     // TODO: verify that the requesting user is an admin
     const newCode = (Math.random() + 1).toString(36).slice(2,7);
@@ -40,6 +46,7 @@ async function delete_expired_gift_codes(req:any, res:any) {
     res.send(response);
 }
 
+router.get('/', utils.authenticate_token, (req, res) => { get_gift_codes(req, res) })
 router.post('/generate', utils.authenticate_token, (req, res) => { generate_gift_code(req, res) })
 router.post('/', utils.authenticate_token, (req, res) => { insert_gift_code(req, res) })
 router.put('/', utils.authenticate_token, (req, res) => { redeem_gift_code(req, res) })

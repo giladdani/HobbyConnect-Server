@@ -1,6 +1,10 @@
 // @ts-ignore
 import GiftCodeModel from '../models/giftCodeModel.ts'
 
+async function get_gift_codes() {
+    return GiftCodeModel.find({expired: false});
+}
+
 async function find_gift_code(code:string) {
     return GiftCodeModel.findOne({code: code, expired: false});
 }
@@ -21,6 +25,7 @@ async function delete_expired_gift_codes() {
 }
 
 export default {
+    get_gift_codes,
     find_gift_code,
     insert_gift_code,
     update_code_expired,

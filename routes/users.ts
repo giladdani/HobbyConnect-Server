@@ -82,9 +82,15 @@ async function get_friend_requests(req:any, res:any) {
 }
 
 async function create_friend_request(req:any, res:any){
-	let request = {sender: req.username, receiver: req.body.receiver, creationDate: new Date(Date.now()).toLocaleString().split(',')[0]}
-	await usersDAL.create_friend_request(request);
-	res.sendStatus(StatusCodes.CREATED);
+	const existingUser = await usersDAL.find_user(req.body.receiver);
+	if(!existingUser){
+		res.status(StatusCodes.NOT_FOUND).send("Error: Reciever not found");
+	}
+	else{
+		let request = {sender: req.username, receiver: req.body.receiver, creationDate: new Date(Date.now()).toLocaleString().split(',')[0]}
+		await usersDAL.create_friend_request(request);
+		res.sendStatus(StatusCodes.CREATED);
+	}
 }
 
 async function update_friend_request_status(req:any, res:any){
