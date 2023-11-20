@@ -67,8 +67,14 @@ async function create_user(req:any, res:any){
 }
 
 async function add_user_balance(req:any, res:any){
-	await usersDAL.add_user_balance(req.username, req.body.amount);
-	res.sendStatus(StatusCodes.OK);
+	const existingUser = await usersDAL.find_user(req.body.username);
+	if(!existingUser){
+		res.status(StatusCodes.NOT_FOUND).send("Error: User not found");
+	}
+	else{
+		await usersDAL.add_user_balance(req.body.username, req.body.amount);
+		res.sendStatus(StatusCodes.OK);
+	}
 }
 
 async function get_friends(req:any, res:any){ 
