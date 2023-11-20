@@ -53,7 +53,7 @@ async function create_user(req:any, res:any){
 	}
 	else{
 		let user = req.body;
-		user.creation_date = new Date(Date.now()).toLocaleString().split(',')[0];
+		user.creationDate = new Date(Date.now()).toLocaleString().split(',')[0];
 		user.status = utils.user_status.CREATED;
 		user.role = utils.user_roles.USER;
 		user.balance = 0;
