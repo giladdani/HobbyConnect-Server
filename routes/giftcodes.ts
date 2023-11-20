@@ -17,13 +17,13 @@ async function get_gift_codes(req:any, res:any) {
 async function generate_gift_code(req:any, res:any) {
     // TODO: verify that the requesting user is an admin
     const newCode = (Math.random() + 1).toString(36).slice(2,7);
-    const amount = req.body.amount;
+    const value = req.body.value;
     // TODO: check if code exists already and generate again if needed
-    res.status(StatusCodes.OK).send({code: newCode, amount: amount});
+    res.status(StatusCodes.OK).send({code: newCode, value: value});
 }
 
 async function insert_gift_code(req:any, res:any) {
-    const dbResponse = await giftCodesDAL.insert_gift_code({code: req.body.code, amount: req.body.amount, expired: false});
+    const dbResponse = await giftCodesDAL.insert_gift_code({code: req.body.code, value: req.body.value, isExpired: false});
     // TODO: check if the db insertion succeeded or failed
     res.sendStatus(StatusCodes.CREATED);
 }
@@ -32,7 +32,7 @@ async function redeem_gift_code(req:any, res:any) {
     const foundCode = await giftCodesDAL.find_gift_code(req.body.code);
     if(foundCode) {
         // TODO: check that DB operations were successful
-        await usersDAL.add_user_balance(req.username, foundCode.amount!);
+        await usersDAL.add_user_balance(req.username, foundCode.value!);
         await giftCodesDAL.update_code_expired(foundCode, true);
         res.sendStatus(StatusCodes.OK);
     }
