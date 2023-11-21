@@ -16,7 +16,7 @@ function create_activity(req:any, res:any) {
     activity.creator = req.username;
     activity.participantsIds = [];
     activity.participantsCount = 0;
-	activity.creationDate = new Date(Date.now()).toLocaleString().split(',')[0];
+	activity.creationDate = new Date(Date.now()).toLocaleDateString('en-GB').split(',')[0];
     activitiesDAL.insert_activity(activity)
     res.sendStatus(StatusCodes.CREATED);
 }

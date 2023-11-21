@@ -53,7 +53,7 @@ async function create_user(req:any, res:any){
 	}
 	else{
 		let user = req.body;
-		user.creationDate = new Date(Date.now()).toLocaleString().split(',')[0];
+		user.creationDate = new Date(Date.now()).toLocaleDateString('en-GB').split(',')[0];
 		user.status = utils.user_status.CREATED;
 		user.role = utils.user_roles.USER;
 		user.balance = 0;
@@ -93,7 +93,7 @@ async function create_friend_request(req:any, res:any){
 		res.status(StatusCodes.NOT_FOUND).send("Error: Reciever not found");
 	}
 	else{
-		let request = {sender: req.username, receiver: req.body.receiver, creationDate: new Date(Date.now()).toLocaleString().split(',')[0]}
+		let request = {sender: req.username, receiver: req.body.receiver, creationDate: new Date(Date.now()).toLocaleDateString('en-GB').split(',')[0]}
 		await usersDAL.create_friend_request(request);
 		res.sendStatus(StatusCodes.CREATED);
 	}
