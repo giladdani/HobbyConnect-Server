@@ -19,7 +19,7 @@ async function login(req:any, res:any){
 	else{
 		bcrypt.compare(req.body.password, user.password, (err:any, result:any) => {
 			if(!result){
-				res.status(StatusCodes.UNAUTHORIZED).send("Error: incorrect password");
+				res.status(StatusCodes.UNAUTHORIZED).send("Incorrect username/password");
 			}
 			else{
 				//TODO: check if user's status is active
@@ -49,7 +49,7 @@ async function create_user(req:any, res:any){
 	// TODO: also check existing user by ID? or just get rid of this id field for good
 	const existingUser = await usersDAL.find_user(req.body.username);
 	if(existingUser){
-		res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("Error: Username already exists");
+		res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("Username already exists");
 	}
 	else{
 		let user = req.body;
@@ -69,7 +69,7 @@ async function create_user(req:any, res:any){
 async function add_user_balance(req:any, res:any){
 	const existingUser = await usersDAL.find_user(req.body.username);
 	if(!existingUser){
-		res.status(StatusCodes.NOT_FOUND).send("Error: User not found");
+		res.status(StatusCodes.NOT_FOUND).send("Username not found");
 	}
 	else{
 		await usersDAL.add_user_balance(req.body.username, req.body.amount);
@@ -90,7 +90,7 @@ async function get_friend_requests(req:any, res:any) {
 async function create_friend_request(req:any, res:any){
 	const existingUser = await usersDAL.find_user(req.body.receiver);
 	if(!existingUser){
-		res.status(StatusCodes.NOT_FOUND).send("Error: Reciever not found");
+		res.status(StatusCodes.NOT_FOUND).send("Username not found");
 	}
 	else{
 		let request = {sender: req.username, receiver: req.body.receiver, creationDate: new Date(Date.now()).toLocaleDateString('en-GB').split(',')[0]}
