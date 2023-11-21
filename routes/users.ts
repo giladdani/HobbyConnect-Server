@@ -93,7 +93,7 @@ async function create_friend_request(req:any, res:any){
 		res.status(StatusCodes.NOT_FOUND).send("Username not found");
 	}
 	else{
-		let request = {sender: req.username, receiver: req.body.receiver, creationDate: new Date(Date.now()).toLocaleDateString('en-GB').split(',')[0]}
+		let request = {sender: req.username, receiver: req.body.receiver, creationDate: new Date(Date.now()).toLocaleString()}
 		await usersDAL.create_friend_request(request);
 		res.sendStatus(StatusCodes.CREATED);
 	}
