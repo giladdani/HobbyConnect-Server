@@ -9,6 +9,11 @@ async function find_user(username:string) {
 }
 
 // returns only the non-sensitive information
+async function get_users() {
+    return UserModel.find({}).select("-password")
+}
+
+// returns only the non-sensitive information
 async function get_user_details(username:string) {
     return UserModel.findOne({username: username}).select("-password");
 }
@@ -63,6 +68,7 @@ async function add_user_balance(username:string, amount:number) {
 
 export default {
     find_user,
+    get_users,
     get_user_details,
     insert_user,
     get_friends,
