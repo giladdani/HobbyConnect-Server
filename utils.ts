@@ -2,23 +2,14 @@ import { StatusCodes } from 'http-status-codes';
 import jwt from 'jsonwebtoken'
 
 const user_status = {
-	CREATED: "created",
 	ACTIVE: "active",
-	SUSPENDED: "suspended"
+	DEACTIVATED: "deactivated"
 }
 
 const user_roles = {
 	USER: "user",
 	ADMIN: "admin"
 }
-
-// const activity_category = {
-// 	CONVENTION: "convention";
-// 	TOURNAMENT: "tournament";
-// 	LAN_PARTY: "lan party";
-// 	GAME_AWARDS: "game awards";
-// }
-
 
 function authenticate_token(req:any, res:any, next:any){
 	const token = req.headers['authorization'];

@@ -21,12 +21,10 @@ async function login(req:any, res:any){
 			if(!result){
 				res.status(StatusCodes.UNAUTHORIZED).send("Incorrect username/password");
 			}
+			else if(user.status === utils.user_status.DEACTIVATED){
+				res.status(StatusCodes.UNAUTHORIZED).send("User is deactivated, reach admin for help");
+			}
 			else{
-				//TODO: check if user's status is active
-				// 	if(user.status != utils.user_status.ACTIVE){
-				// 		res.status(StatusCodes.FORBIDDEN).send("User status must be active to login");
-				// 	}
-
 				// Create access token
 				const accessToken = jwt.sign({username: user.username}, process.env.ACCESS_TOKEN_SECRET!);
 				res.status(StatusCodes.OK).send(accessToken);
@@ -60,6 +58,11 @@ async function get_logged_user_details(req:any, res:any){
 	}
 }
 
+async function update_user_status(req:any, res:any){
+	const response = await usersDAL.update_user_status(req.params.username, req.body.status);
+	res.sendStatus(StatusCodes.OK);
+}
+
 async function delete_user(req:any, res:any){
 	const response = await usersDAL.delete_user(req.params.username);
 	res.sendStatus(StatusCodes.OK);
@@ -74,7 +77,7 @@ async function create_user(req:any, res:any){
 	else{
 		let user = req.body;
 		user.creationDate = new Date(Date.now()).toLocaleDateString('en-GB').split(',')[0];
-		user.status = utils.user_status.CREATED;
+		user.status = utils.user_status.ACTIVE;
 		user.role = utils.user_roles.USER;
 		user.balance = 0;
 		user.friends = [];
@@ -144,6 +147,7 @@ router.post('/login', async(req, res) => { login(req, res) })
 router.get('/', utils.authenticate_token, (req, res) => { get_users(req, res) })
 router.get('/profile/:username', utils.authenticate_token, (req, res) => { get_user(req, res) })
 router.get('/profile', utils.authenticate_token, (req, res) => { get_logged_user_details(req, res) })
+router.put('/:username', utils.authenticate_token, (req, res) => { update_user_status(req, res) })
 router.delete('/:username', utils.authenticate_token, (req, res) => { delete_user(req, res) })
 router.post('/', (req, res) => { create_user(req, res) })
 router.get('/friends', utils.authenticate_token, (req, res) => { get_friends(req, res) })

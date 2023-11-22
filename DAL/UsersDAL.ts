@@ -18,6 +18,10 @@ async function get_user_details(username:string) {
     return UserModel.findOne({username: username}).select("-password");
 }
 
+async function update_user_status(username:string, status:string) {
+    return UserModel.updateOne({username: username}, {status: status});
+}
+
 async function delete_user(username:string) {
     return UserModel.deleteOne({username: username});
 }
@@ -74,6 +78,7 @@ export default {
     find_user,
     get_users,
     get_user_details,
+    update_user_status,
     delete_user,
     insert_user,
     get_friends,
