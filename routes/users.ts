@@ -60,6 +60,11 @@ async function get_logged_user_details(req:any, res:any){
 	}
 }
 
+async function delete_user(req:any, res:any){
+	const response = await usersDAL.delete_user(req.params.username);
+	res.sendStatus(StatusCodes.OK);
+}
+
 async function create_user(req:any, res:any){
 	// TODO: also check existing user by ID? or just get rid of this id field for good
 	const existingUser = await usersDAL.find_user(req.body.username);
@@ -139,6 +144,7 @@ router.post('/login', async(req, res) => { login(req, res) })
 router.get('/', utils.authenticate_token, (req, res) => { get_users(req, res) })
 router.get('/profile/:username', utils.authenticate_token, (req, res) => { get_user(req, res) })
 router.get('/profile', utils.authenticate_token, (req, res) => { get_logged_user_details(req, res) })
+router.delete('/:username', utils.authenticate_token, (req, res) => { delete_user(req, res) })
 router.post('/', (req, res) => { create_user(req, res) })
 router.get('/friends', utils.authenticate_token, (req, res) => { get_friends(req, res) })
 router.get('/friends/requests', utils.authenticate_token, (req, res) => { get_friend_requests(req, res) })

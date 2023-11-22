@@ -18,6 +18,10 @@ async function get_user_details(username:string) {
     return UserModel.findOne({username: username}).select("-password");
 }
 
+async function delete_user(username:string) {
+    return UserModel.deleteOne({username: username});
+}
+
 async function insert_user(user:any) {
     // TODO: check if the db insertion succeeded or failed
     await UserModel.create(user);
@@ -70,6 +74,7 @@ export default {
     find_user,
     get_users,
     get_user_details,
+    delete_user,
     insert_user,
     get_friends,
     get_friend_requests,
