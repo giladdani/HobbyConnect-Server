@@ -40,7 +40,17 @@ async function get_users(req:any, res:any){
 	res.status(StatusCodes.OK).send(users);
 }
 
-async function get_user_details(req:any, res:any){
+async function get_user(req:any, res:any){
+	const user = await usersDAL.get_user_details(req.params.username)
+	if(user){
+		res.status(StatusCodes.OK).send(user);
+	}
+	else{
+		res.status(StatusCodes.NOT_FOUND).send({data: "User not found"});
+	}
+}
+
+async function get_logged_user_details(req:any, res:any){
 	const userDetails = await usersDAL.get_user_details(req.username)
 	if(userDetails){
 		res.status(StatusCodes.OK).send(userDetails);
@@ -127,7 +137,8 @@ async function get_user_balance(req:any, res:any){
 // Routing
 router.post('/login', async(req, res) => { login(req, res) })
 router.get('/', utils.authenticate_token, (req, res) => { get_users(req, res) })
-router.get('/profile', utils.authenticate_token, (req, res) => { get_user_details(req, res) })
+router.get('/profile/:username', utils.authenticate_token, (req, res) => { get_user(req, res) })
+router.get('/profile', utils.authenticate_token, (req, res) => { get_logged_user_details(req, res) })
 router.post('/', (req, res) => { create_user(req, res) })
 router.get('/friends', utils.authenticate_token, (req, res) => { get_friends(req, res) })
 router.get('/friends/requests', utils.authenticate_token, (req, res) => { get_friend_requests(req, res) })
