@@ -14,7 +14,7 @@ let router = express.Router()
 async function login(req:any, res:any){
 	const user = await usersDAL.find_user(req.body.username);
 	if(!user){
-		res.sendStatus(StatusCodes.NOT_FOUND);
+		res.status(StatusCodes.NOT_FOUND).send("User not found");
 	}
 	else{
 		bcrypt.compare(req.body.password, user.password, (err:any, result:any) => {
@@ -147,7 +147,7 @@ router.post('/login', async(req, res) => { login(req, res) })
 router.get('/', utils.authenticate_token, (req, res) => { get_users(req, res) })
 router.get('/profile/:username', utils.authenticate_token, (req, res) => { get_user(req, res) })
 router.get('/profile', utils.authenticate_token, (req, res) => { get_logged_user_details(req, res) })
-router.put('/:username', utils.authenticate_token, (req, res) => { update_user_status(req, res) })
+router.put('/status/:username', utils.authenticate_token, (req, res) => { update_user_status(req, res) })
 router.delete('/:username', utils.authenticate_token, (req, res) => { delete_user(req, res) })
 router.post('/', (req, res) => { create_user(req, res) })
 router.get('/friends', utils.authenticate_token, (req, res) => { get_friends(req, res) })

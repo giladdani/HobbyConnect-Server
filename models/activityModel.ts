@@ -13,7 +13,7 @@ const activitySchema = new Schema({
         default: 0
     },
     creator: String,
-    creationDate: Date,
+    creationDate: String,
     participantsUsernames: [String]
 })
 
