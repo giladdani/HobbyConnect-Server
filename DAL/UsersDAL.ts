@@ -8,18 +8,22 @@ async function find_user(username:string) {
     return UserModel.findOne({username: username});
 }
 
-// returns only the non-sensitive information
+// returns only non-sensitive information
 async function get_users() {
     return UserModel.find({}).select("-password")
 }
 
-// returns only the non-sensitive information
+// returns only non-sensitive information
 async function get_user_details(username:string) {
     return UserModel.findOne({username: username}).select("-password");
 }
 
 async function update_user_status(username:string, status:string) {
     return UserModel.updateOne({username: username}, {status: status});
+}
+
+async function update_user_role(username:string, role:string) {
+    return UserModel.updateOne({username: username}, {role: role});
 }
 
 async function delete_user(username:string) {
@@ -79,6 +83,7 @@ export default {
     get_users,
     get_user_details,
     update_user_status,
+    update_user_role,
     delete_user,
     insert_user,
     get_friends,

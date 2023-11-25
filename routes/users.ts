@@ -59,7 +59,12 @@ async function get_logged_user_details(req:any, res:any){
 }
 
 async function update_user_status(req:any, res:any){
-	const response = await usersDAL.update_user_status(req.params.username, req.body.status);
+	const response = await usersDAL.update_user_status(req.body.username, req.body.status);
+	res.sendStatus(StatusCodes.OK);
+}
+
+async function update_user_role(req:any, res:any){
+	const response = await usersDAL.update_user_role(req.body.username, req.body.role);
 	res.sendStatus(StatusCodes.OK);
 }
 
@@ -147,7 +152,8 @@ router.post('/login', async(req, res) => { login(req, res) })
 router.get('/', utils.authenticate_token, (req, res) => { get_users(req, res) })
 router.get('/profile/:username', utils.authenticate_token, (req, res) => { get_user(req, res) })
 router.get('/profile', utils.authenticate_token, (req, res) => { get_logged_user_details(req, res) })
-router.put('/status/:username', utils.authenticate_token, (req, res) => { update_user_status(req, res) })
+router.put('/status', utils.authenticate_token, (req, res) => { update_user_status(req, res) })
+router.put('/role', utils.authenticate_token, (req, res) => { update_user_role(req, res) })
 router.delete('/:username', utils.authenticate_token, (req, res) => { delete_user(req, res) })
 router.post('/', (req, res) => { create_user(req, res) })
 router.get('/friends', utils.authenticate_token, (req, res) => { get_friends(req, res) })
